@@ -13,7 +13,7 @@
       "disk_size": 61440,
       "floppy_files": [
         "Autounattend.xml",
-          "./scripts/windows/fixnetwork.ps1"
+          "./scripts/fixnetwork.ps1"
       ],
       "guest_additions_mode": "disable",
       "guest_os_type": "Windows10_64",
