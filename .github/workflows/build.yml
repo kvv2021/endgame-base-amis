@@ -27,8 +27,10 @@ jobs:
       id: ip
       uses: haythem/public-ip@v1.2
     
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
+    - name: Install qemu
+        run: |
+          sudo apt-get update
+          sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
 
  
 # This take the our private ssh key and ships it to the ubuntu instance, that will then provision AWS  
