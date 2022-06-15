@@ -1,0 +1,12 @@
+name: 'Packer build'
+description: 'Run Packer build'
+debug: true
+inputs:
+  template:
+    description: 'Packer template to use'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.template }}

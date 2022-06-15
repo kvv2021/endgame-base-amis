@@ -1,0 +1,60 @@
+# The statically defined numbers should align with the current version of the Elastic Stack
+# The current Elastic Stack version is 7.12.1
+name-template: 'NSM Student Lab Image 7.12.1v$RESOLVED_VERSION'
+tag-prefix: v7.12.1
+tag-template: 'v7.12.1v$RESOLVED_VERSION'
+version-template: '$MAJOR.$MINOR'
+template: |
+ 
+ GitHub release of the NSM Student Lab image, course version 7.12.1v$RESOLVED_VERSION.
+ 
+ The AMI associated with this release is `ami-` and has been updated in the following Strigo classes:
+ - [Private NSM Cyber Operator](https://app.strigo.io/lounge/classes/61aa4b885bf7f808c1d69c00)
+ - [Private Threat Hunting with Kibana](https://app.strigo.io/lounge/classes/CWnq2BiKfgst8gpBP)
+ - [Private Department of Defense Cyber Operator](https://app.strigo.io/lounge/classes/uLk6Wh4WoTMjnhvRC)
+ - [Private Network Security Monitoring Cyber Operator](https://app.strigo.io/lounge/classes/63QN4GaPqLxspuZ7v)
+ 
+ ## Changes
+  
+  $CHANGES
+  
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+
+branches:
+  - main
+
+categories:
+  - title: 'Image Updates'
+    labels:
+      - 'image'
+    collapse-after: 10
+  - title: 'New Features'
+    labels:
+      - 'enhancement'
+    collapse-after: 10
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'bug'
+    collapse-after: 5
+  - title: 'Documentation'
+    labels:
+      - 'documentation'
+    collapse-after: 10
+
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+
+version-resolver:
+  major:
+    labels:
+      - 'version:major'
+  minor:
+    labels:
+      - 'version:minor'
+  patch:
+    labels:
+      - 'version:patch'
+  default: 'minor'
+
+exclude-labels:
+  - 'skip-changelog'

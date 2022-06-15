@@ -1,0 +1,54 @@
+name: Build Windows Base Training AMI
+
+# Controls when the action will run. 
+
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
+  workflow_dispatch:
+  schedule:
+  - cron: '1 1 * * 0'  # once a week on sunday 
+
+jobs:
+  packer:
+    runs-on: ubuntu-20.04
+    name: Build Temp Ubuntu Env for Build Pipeline
+    steps:
+    - name: Branch name
+      run: echo running on branch ${GITHUB_REF##*/}
+      
+    - name: Checkout files from commit tree
+      uses: actions/checkout@v2
+
+    - name: Public IP of Ubuntu Instance of Build Pipeline
+      id: ip
+      uses: haythem/public-ip@v1.2
+ 
+# This take the our private ssh key and ships it to the ubuntu instance, that will then provision AWS  
+    - name: Move SSH key to Ephemeral Ubuntu Instance 
+      run: |
+          mkdir /home/runner/work/_temp/_github_home
+          echo "$SSH_PRIVATE_KEY" > /home/runner/work/_temp/_github_home/elastic_training
+      env:
+          SSH_PRIVATE_KEY: ${{ secrets.KEY_FILE }}
+      
+    - name: Docker-> Packer -> Ansible -> AWS -> AMI -> WIN!
+      uses: ./.github/actions/packer/
+      with:
+        template: 'ami/windows.json'
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: eu-central-1
+        SERVICE_PASSWORD: ${{ secrets.SERVICE_PASSWORD }}
+        STACK_PASSWORD: ${{ secrets.STACK_PASSWORD }}
+        RUNNER_IPV4: ${{ steps.ip.outputs.ipv4 }}
+        KEY_FILE: ${{ secrets.KEY_FILE }}
+        EC_AUTH: ${{ secrets.EC_AUTH}}
+        EC_ID: ${{ secrets.EC_ID }}
+        SSH_FILE: ${{ secrets.SSH_FILE }}
+        AWS_MAX_ATTEMPTS: 90
+        AWS_POLL_DELAY_SECONDS: 60

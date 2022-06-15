@@ -1,0 +1,6 @@
+# Need to set `blank_issues_enabled` to `false` in the future
+blank_issues_enabled: false
+contact_links:
+  - name: Amer-Fed Education Team
+    url: https://github.com/elastic/amer-fed-education-team
+    about: Please report all Amer-Fed Education Team related issues here instead of this repo.

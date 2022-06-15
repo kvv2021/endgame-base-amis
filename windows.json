@@ -5,11 +5,14 @@
   "_comment3": "NAME=windows-server-2019   WINDOWS_VERSION=2019 DRIVER_ISO=./packer_cache/virtio-win.iso ISO_URL=https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso                                                          packer build windows.json",
   "builders": [
     {
+      "accelerator": "{{ user `qemu_accelerator`}}",
       "boot_command": "",
       "boot_wait": "6m",
       "communicator": "winrm",
       "cpus": "{{ user `cpus`}}",
+      "disk_cache": "unsafe",
       "disk_size": "{{user `disk_size`}}",
+      "disk_interface": "virtio-scsi",
       "floppy_files": [
         "{{user `autounattend`}}",
         "./files/WindowsPowershell.lnk",
@@ -26,7 +29,8 @@
       ],
       "format": "raw",
       "headless": "{{ user `headless`}}",
-      "iso_checksum": "{{user `iso_md5`}}",
+      "display": "{{ user `display`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
       "iso_urls": [
         "{{user `iso_url`}}"
       ],
@@ -34,9 +38,10 @@
         "{{ user `driver_iso_dir`}}/*"
       ],
       "memory": "{{ user `memory`}}",
+      "net_device": "virtio-net",
       "output_directory": "output/{{ user `name` }}_{{ build_type }}",
       "name": "{{ user `name` }}",
-      "type": "virtualbox-iso",
+      "type": "qemu",
       "vm_name": "disk.raw",
       "shutdown_timeout": "2h",
       "shutdown_command": "",
@@ -45,6 +50,43 @@
       "winrm_username": "{{ user `winrm_username` }}"
     }
   ],
+  "post-processors": [
+    [
+      {
+        "name": "compress",
+        "type": "compress",
+        "output": "output/{{ user `name` }}_{{ build_type }}.tar.gz"
+      }
+    ],
+    [
+      {
+        "name": "amazon-import",
+        "output": "output/{{ user `name` }}_{{ build_type }}.tar.gz",
+        "type": "compress"
+      },
+      {
+        "type": "googlecompute-import",
+        "account_file": "{{ user `gcp_account_file`}}",
+        "project_id": "{{ user `gcp_project`}}",
+        "bucket": "{{ user `gcs_bucket`}}",
+        "image_guest_os_features": [
+          "WINDOWS",
+          "MULTI_IP_SUBNET",
+          "VIRTIO_SCSI_MULTIQUEUE"
+        ],
+        "image_labels": {
+          "buildstamp": "{{ timestamp }}",
+          "build_number": "{{ user `build_number`}}",
+          "commit": "{{ user `commit`}}"
+        },
+        "image_name": "{{ user `name`}}-{{ user `build_date`}}",
+        "image_description": "Microsoft Windows {{ user `name`}}, built on {{ user `build_date`}} with Packer.",
+        "image_family": "{{ user `name`}}"
+      }
+    ]
+  ],
+  
+
   "provisioners": [
     {
       "scripts": [
@@ -89,15 +131,7 @@
       "type": "windows-shell"
     }
   ],
-  "post-processors": [
-    [
-      {
-        "name": "compress",
-        "type": "compress",
-        "output": "output/{{ user `name` }}_{{ build_type }}.ova"
-      }
-    ]
-  ],
+
   "variables": {
     "windows_version": "{{ env `WINDOWS_VERSION` }}",
     "autounattend": "installer-configs/windows{{ user `windows_version` }}/Autounattend.xml",
