@@ -120,7 +120,7 @@
 
   "variables": {
     "windows_version": "{{ env `WINDOWS_VERSION` }}",
-    "autounattend": "installer-configs/windows{{ user `windows_version` }}/Autounattend.xml",
+    "autounattend": "./installer-configs/windows{{ user `windows_version` }}/Autounattend.xml",
     "build_number": "{{ isotime \"20060102\" }}",
     "build_date": "{{ isotime \"20060102\" }}",
     "disk_size": "51200",
