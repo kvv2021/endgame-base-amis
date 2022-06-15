@@ -22,7 +22,8 @@ jobs:
       run: |
         curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
         /bin/bash install.sh
-        brew install qemu
+        brew tap hashicorp/tap
+        brew install qemu hashicorp/tap/packer
 
 
     - name: Branch name
@@ -40,9 +41,8 @@ jobs:
 # This take the our private ssh key and ships it to the ubuntu instance, that will then provision AWS  
       
     - name: Docker-> Packer -> Ansible -> AWS -> AMI -> WIN!
-      uses: ./.github/actions/packer
-      with:
-        template: 'windows.json'
+      run: |
+        packer build windows.json
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
