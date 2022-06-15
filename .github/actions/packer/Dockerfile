@@ -1,13 +1,8 @@
-FROM enros/packer-build-qemu:latest
+FROM hashicorp/packer:light
 
-LABEL "com.github.actions.name" = "Packer build on top of kvm hypervisor"
+RUN apk add --no-cache ansible
+# Uncomment for DEBUG and comment the other, this keeps packer from removing the instance after its provisioned.
+# ENTRYPOINT ["/bin/packer", "build", "-debug", "-on-error=abort"]
 
-LABEL "repository" = "https://github.com/enr0s/packer-build-action"
-LABEL "homepage" = "https://github.com/enr0s/packer-build-action"
-LABEL "maintainer" = "enr0s <info@enros.me>"
-
-RUN modprobe kvm-intel
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+# Otherwise use this one
+ENTRYPOINT ["/bin/packer", "build"]
