@@ -40,8 +40,7 @@ jobs:
 # This take the our private ssh key and ships it to the ubuntu instance, that will then provision AWS  
     - name: Move SSH key to Ephemeral Ubuntu Instance 
       run: |
-          mkdir /home/runner/work/_temp/_github_home
-          echo "$SSH_PRIVATE_KEY" > /home/runner/work/_temp/_github_home/elastic_training
+          echo "$SSH_PRIVATE_KEY" > elastic_training
       env:
           SSH_PRIVATE_KEY: ${{ secrets.KEY_FILE }}
       
