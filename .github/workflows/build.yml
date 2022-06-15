@@ -22,7 +22,7 @@ jobs:
       run: |
         curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
         /bin/bash install.sh
-        brew install qemu-kvm
+        brew install qemu
 
 
     - name: Branch name
