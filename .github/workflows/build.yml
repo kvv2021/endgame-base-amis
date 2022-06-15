@@ -14,7 +14,7 @@ on:
 
 jobs:
   packer:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Build Temp Ubuntu Env for Build Pipeline
     steps:
 
@@ -23,7 +23,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install qemu binfmt-support qemu-user-static
         docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-        docker run -d --platform=linux/arm64 --name arm_container arm64v8/${{ matrix.image }} sleep 3600
+        docker run -d --platform=linux/arm64 --name arm_container arm64v8/ubuntu:focal sleep 3600
 
     - name: Branch name
       run: echo running on branch ${GITHUB_REF##*/}
