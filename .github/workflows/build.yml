@@ -21,7 +21,7 @@ jobs:
     - name: Install qemu
       run: |
         sudo apt-get update
-        sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+        sudo apt-get install qemu binfmt-support qemu-user-static
 
     - name: Branch name
       run: echo running on branch ${GITHUB_REF##*/}
