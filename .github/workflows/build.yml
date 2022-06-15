@@ -36,7 +36,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.KEY_FILE }}
       
     - name: Docker-> Packer -> Ansible -> AWS -> AMI -> WIN!
-      uses: ./.github/actions/packer/
+      uses: enr0s/packer-qemu-action@v1.0
       with:
         template: 'ami/windows.json'
       env:
