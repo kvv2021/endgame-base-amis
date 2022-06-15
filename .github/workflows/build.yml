@@ -21,7 +21,10 @@ jobs:
     - name: Install qemu
       run: |
         sudo apt-get update
-        sudo apt-get install qemu-system-x86_64
+        sudo apt-get install qemu
+        which qemu
+        ln -s /usr/local/bin/VBoxManage.sh /usr/bin/VBoxManage
+
 
     - name: Branch name
       run: echo running on branch ${GITHUB_REF##*/}
