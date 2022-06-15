@@ -42,6 +42,7 @@
       "output_directory": "output/{{ user `name` }}_{{ build_type }}",
       "name": "{{ user `name` }}",
       "type": "qemu",
+      "qemu_binary": "qemu-kvm",
       "vm_name": "disk.raw",
       "shutdown_timeout": "2h",
       "shutdown_command": "",
