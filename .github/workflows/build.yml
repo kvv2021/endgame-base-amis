@@ -17,6 +17,14 @@ jobs:
     runs-on: ubuntu-20.04
     name: Build Temp Ubuntu Env for Build Pipeline
     steps:
+
+    - name: Install qemu
+        run:
+          sudo apt-get update
+          sudo apt-get install qemu-kvm 
+          sudo apt-get install libvirt-daemon-system 
+          sudo apt-get install libvirt-clients bridge-utils
+
     - name: Branch name
       run: echo running on branch ${GITHUB_REF##*/}
       
@@ -27,12 +35,6 @@ jobs:
       id: ip
       uses: haythem/public-ip@v1.2
     
-    - name: Install qemu
-        run:
-          sudo apt-get update
-          sudo apt-get install qemu-kvm 
-          sudo apt-get install libvirt-daemon-system 
-          sudo apt-get install libvirt-clients bridge-utils
 
  
 # This take the our private ssh key and ships it to the ubuntu instance, that will then provision AWS  
