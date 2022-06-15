@@ -26,6 +26,10 @@ jobs:
     - name: Public IP of Ubuntu Instance of Build Pipeline
       id: ip
       uses: haythem/public-ip@v1.2
+    
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+
  
 # This take the our private ssh key and ships it to the ubuntu instance, that will then provision AWS  
     - name: Move SSH key to Ephemeral Ubuntu Instance 
@@ -36,9 +40,9 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.KEY_FILE }}
       
     - name: Docker-> Packer -> Ansible -> AWS -> AMI -> WIN!
-      uses: enr0s/packer-qemu-action@v0.2
+      uses: ./.github/actions/packer
       with:
-        templateFile: 'ami/windows.json'
+        template: 'ami/windows.json'
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
