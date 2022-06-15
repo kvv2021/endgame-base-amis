@@ -130,8 +130,6 @@
     "memory": "8192",
     "headless": "false",
     "name": "{{ env `NAME` }}",
-    "iso_md5": "e85637e135e9b6dbc5fa02b463a95764",
-    "iso_url": "{{ env `ISO_URL` }}",
     "driver_iso_dir": "{{ env `DRIVER_ISO_DIR` }}",
     "winrm_password": "admin",
     "winrm_username": "since-reader-escape-within",
