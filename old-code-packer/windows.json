@@ -1,0 +1,61 @@
+{
+  "_comment0": "# spellchecker: disable",
+  "_comment1": "NAME=windows-10            WINDOWS_VERSION=10   DRIVER_ISO=./packer_cache/virtio-win.iso ISO_URL=https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso                                             packer build windows.json",
+  
+  "variables": {
+    "iso_md5": "e85637e135e9b6dbc5fa02b463a95764",
+    "iso_path": "https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+  },
+  
+  "builders": [
+    {
+      "communicator": "winrm",
+      "disk_size": 61440,
+      "floppy_files": [
+        "Autounattend.xml",
+          "./scripts/fixnetwork.ps1"
+      ],
+      "guest_additions_mode": "disable",
+      "guest_os_type": "Windows10_64",
+      "hard_drive_interface": "sata",
+      "headless": true,
+      "iso_checksum": "md5:{{user `iso_md5`}}",
+      "iso_interface": "sata",
+      "iso_url": "{{user `iso_path`}}",
+      "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "4096"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "2"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--vram",
+          "32"
+        ]
+      ],
+      "winrm_insecure": true,
+      "winrm_password": "vagrant",
+      "winrm_timeout": "6h",
+      "winrm_username": "vagrant"
+    }
+  ],
+  "provisioners": [
+    {
+      "scripts": [
+        "./scripts/cleanup.ps1"
+      ],
+      "type": "powershell"
+    }
+  ]
+}
