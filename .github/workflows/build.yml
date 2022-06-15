@@ -14,15 +14,16 @@ on:
 
 jobs:
   packer:
-    runs-on: ubuntu-20.04
-    name: Build Temp Ubuntu Env for Build Pipeline
+    runs-on: macOS 12
+    name: Build Temp macOS for Build Pipeline
     steps:
 
     - name: Install qemu
       run: |
-        sudo apt-get update
-        sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
-        systemctl start qemu-kvm
+        xcode-select --install
+        curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+        /bin/bash install.sh
+        brew install qemu-kvm
 
 
     - name: Branch name
