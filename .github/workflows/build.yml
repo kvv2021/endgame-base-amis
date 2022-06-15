@@ -14,7 +14,7 @@ on:
 
 jobs:
   packer:
-    runs-on: macOS 12
+    runs-on: macOS-12
     name: Build Temp macOS for Build Pipeline
     steps:
 
