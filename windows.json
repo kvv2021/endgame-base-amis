@@ -56,17 +56,18 @@
         "name": "compress",
         "type": "compress",
         "output": "output/{{ user `name` }}_{{ build_type }}.ova"
-      }
+      },
 
       {
           "type": "amazon-import",
-          "access_key": "YOUR KEY HERE",
-          "secret_key": "YOUR SECRET KEY HERE",
+          "access_key": "{{user `aws_access_key`}}",
+          "secret_key": "{{user `aws_access_secret`}}",
           "region": "us-east-1",
-          "s3_bucket_name": "importbucket",
+          "s3_bucket_name": "education-ami-resources",
+          "s3_key_name": "vms/amer-fed-kw-win10-base.ova",
           "license_type": "BYOL",
           "tags": {
-            "Description": "packer amazon-import {{timestamp}}"
+            "Description": "amer-fed-kw-import-{{timestamp}}"
           }
       }
     ]
