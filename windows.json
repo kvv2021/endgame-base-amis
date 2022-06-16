@@ -16,7 +16,7 @@
       "qemuargs": [
         [
           "-drive",
-          "file={{ user `virtio_win_iso` }},media=cdrom,index=3"
+          "file={{ user `driver_iso_url` }},media=cdrom,index=3"
         ],
         [
           "-drive",
