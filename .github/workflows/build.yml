@@ -33,7 +33,7 @@ jobs:
         brew tap hashicorp/tap
         brew install qemu hashicorp/tap/packer
         mkdir /Users/runner/windows-build
-        sudo touch /Users/runner/windows-build/.VolumeIcon.icns
+        sudo touch /.VolumeIcon.icns
         
 
     - name: Public IP of Ubuntu Instance of Build Pipelin
