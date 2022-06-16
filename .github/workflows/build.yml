@@ -34,6 +34,7 @@ jobs:
         brew install qemu hashicorp/tap/packer
         mkdir /Users/runner/windows-build
         sudo touch /.VolumeIcon.icns
+        sudo chmod runner:admin /Users/runner/windows-build
         
 
     - name: Public IP of Ubuntu Instance of Build Pipelin
