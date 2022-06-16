@@ -35,7 +35,6 @@
         "{{user `iso_url`}}"
       ],
       "cd_files": [
-        "{{ user `driver_iso_path`}}",
         "{{ user `iso_path`}}"
       ],
       "memory": "{{ user `memory`}}",
