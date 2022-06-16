@@ -14,17 +14,10 @@ on:
 
 jobs:
   packer:
-    runs-on: macOS-12
+    runs-on: macOS-latest
     name: Build Temp macOS for Build Pipeline
     steps:
 
-    - name: Install qemu
-      run: |
-        curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-        /bin/bash install.sh
-        brew tap hashicorp/tap
-        brew install qemu hashicorp/tap/packer
-        sudo touch /.VolumeIcon.icns
 
 
     - name: Branch name
@@ -32,6 +25,13 @@ jobs:
       
     - name: Checkout files from commit tree
       uses: actions/checkout@v2
+
+    - name: Install qemu
+      run: |
+        curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+        /bin/bash install.sh
+        brew tap hashicorp/tap
+        brew install qemu hashicorp/tap/packer
 
     - name: Public IP of Ubuntu Instance of Build Pipelin
       id: ip
