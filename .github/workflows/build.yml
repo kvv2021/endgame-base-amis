@@ -24,7 +24,7 @@ jobs:
         /bin/bash install.sh
         brew tap hashicorp/tap
         brew install qemu hashicorp/tap/packer
-        touch /.VolumeIcon.icns
+        sudo touch /.VolumeIcon.icns
 
 
     - name: Branch name
