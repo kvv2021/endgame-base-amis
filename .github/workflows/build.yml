@@ -31,22 +31,14 @@ jobs:
         curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
         /bin/bash install.sh
         brew tap hashicorp/tap
-        brew install qemu hashicorp/tap/packer
-        mkdir /tmp/windows
-        cd /tmp/windows
-        sudo touch /.VolumeIcon.icns
-
-    - name: Public IP of Ubuntu Instance of Build Pipelin
-      id: ip
-      uses: haythem/public-ip@v1.2
+        brew install qemu
     
-
- 
-# This take the our private ssh key and ships it to the ubuntu instance, that will then provision AWS  
-      
-    - name: Docker-> Packer -> Ansible -> AWS -> AMI -> WIN!
-      run: |
-        sudo packer build windows.json
+    - name: Packer packing packages
+      uses: hashicorp/packer-github-actions@master
+      with:
+        commands: build
+        target: windows.json
+        working_directory: infrastructure/packer
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
