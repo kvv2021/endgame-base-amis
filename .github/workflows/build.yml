@@ -32,15 +32,15 @@ jobs:
         /bin/bash install.sh
         brew tap hashicorp/tap
         brew install qemu hashicorp/tap/packer
+
+    - name: Stage and pull down ISO's
         mkdir /Users/runner/windows-build
+        mkdir /Users/runner/windows-build/isos
+        cd /Users/runner/windows-build/isos
+        wget https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso
+        wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.189-1/virtio-win-0.1.189.iso
         sudo touch /.VolumeIcon.icns
         
-
-    - name: Public IP of Ubuntu Instance of Build Pipelin
-      id: ip
-      uses: haythem/public-ip@v1.2
-    
-
  
 # This take the our private ssh key and ships it to the ubuntu instance, that will then provision AWS  
       
