@@ -32,6 +32,7 @@ jobs:
         /bin/bash install.sh
         brew tap hashicorp/tap
         brew install qemu hashicorp/tap/packer
+        sudo touch /.VolumeIcon.icns
 
     - name: Public IP of Ubuntu Instance of Build Pipelin
       id: ip
