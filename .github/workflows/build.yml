@@ -34,6 +34,7 @@ jobs:
         brew install qemu hashicorp/tap/packer
 
     - name: Stage and pull down ISO's
+      run: |
         mkdir /Users/runner/windows-build
         mkdir /Users/runner/windows-build/isos
         cd /Users/runner/windows-build/isos
