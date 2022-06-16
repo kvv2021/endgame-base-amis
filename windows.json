@@ -13,6 +13,16 @@
       "disk_cache": "unsafe",
       "disk_size": "{{user `disk_size`}}",
       "disk_interface": "virtio-scsi",
+      "qemuargs": [
+        [
+          "-drive",
+          "file={{ user `virtio_win_iso` }},media=cdrom,index=3"
+        ],
+        [
+          "-drive",
+          "file={{ user `iso_url` }},media=cdrom,index=2"
+        ]
+      ],
       "floppy_files": [
         "{{user `autounattend`}}",
         "./files/WindowsPowershell.lnk",
@@ -31,12 +41,7 @@
       "headless": "{{ user `headless`}}",
       "display": "{{ user `display`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_urls": [
-        "{{user `iso_url`}}"
-      ],
-      "cd_files": [
-        "{{ user `virtio_win_iso_dir`}}/*"
-      ],
+      "iso_url": "{{user `iso_url`}}",
       "memory": "{{ user `memory`}}",
       "net_device": "virtio-net",
       "output_directory": "output/{{ user `name` }}_{{ build_type }}",
@@ -127,6 +132,7 @@
     "build_number": "{{ isotime \"20060102\" }}",
     "build_date": "{{ isotime \"20060102\" }}",
     "disk_size": "51200",
+    "virtio_win_iso": "./virtio-win.iso",
     "cpus": "4",
     "memory": "8192",
     "headless": "false",
