@@ -34,7 +34,6 @@ jobs:
         brew install qemu hashicorp/tap/packer
         mkdir /Users/runner/windows-build
         sudo touch /.VolumeIcon.icns
-        sudo chown runner:admin /Users/runner/windows-build
         
 
     - name: Public IP of Ubuntu Instance of Build Pipelin
@@ -47,7 +46,7 @@ jobs:
       
     - name: Docker-> Packer -> Ansible -> AWS -> AMI -> WIN!
       run: |
-        PACKER_CACHE_DIR=/Users/runner/windows-build/packer_cache packer build -var-file variables.json windows.json
+        PACKER_CACHE_DIR=/Users/runner/windows-build/packer_cache sudo packer build -var-file variables.json windows.json
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
