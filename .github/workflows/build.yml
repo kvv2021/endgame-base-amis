@@ -38,8 +38,8 @@ jobs:
     - name: Stand up an EC2 instance for us to use
       run: |
           echo "C5_INSTANCE_ID=$(aws ec2 run-instances \
-          --image-id ami-38d2d625 \
-          --instance-type t2.medium \
+          --image-id ami-0f58468b80db2db66 \
+          --instance-type c5.large \
           --security-group-ids sg-0b01df679b9ce6126 \
           --key-name elastic_training | jq -r '.Instances[0] | .InstanceId')" >> $GITHUB_ENV
       env:
@@ -77,11 +77,11 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.KEY_FILE }}
         REMOTE_HOST: ${{ env.C5_REMOTE_HOST }}
-        REMOTE_USER: ec2-user
-        TARGET: /home/ec2-user
+        REMOTE_USER: root
+        TARGET: /tmp
       
     
-    - name: executing remote ssh commands using password
+    - name: Install QEMU packages
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.C5_REMOTE_HOST }}
@@ -91,3 +91,26 @@ jobs:
         script: |
           yum update -y
           yum install qemu-kvm qemu-img yum install virt-manager libvirt libvirt-python python-virtinst libvirt-client
+    
+    - name: Install Packer
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.C5_REMOTE_HOST }}
+        username: root
+        key: ${{ secrets.KEY_FILE }}
+        port: 22
+        script: |
+          yum install -y yum-utils
+          yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+          yum -y install packer
+
+    - name: Stand up Windows instance
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.C5_REMOTE_HOST }}
+        username: root
+        key: ${{ secrets.KEY_FILE }}
+        port: 22
+        script: |
+          cd /tmp
+          packer build windows.json
