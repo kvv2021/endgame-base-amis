@@ -37,7 +37,7 @@ jobs:
 
     - name: Stand up an EC2 instance for us to use
       run: |
-          echo "aws ec2 run-instances \
+          echo "C5_INSTANCE_ID=$(aws ec2 run-instances \
           --image-id ami-38d2d625 \
           --instance-type t2.medium \
           --security-group-ids sg-0b01df679b9ce6126 \
@@ -46,10 +46,13 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: eu-central-1
+      
+    - name: Repeat ID
+      run: echo "${{ env.C5_INSTANCE_ID }}"
 
     - name: Grab DNS name for it
       run: |
-          echo "aws ec2 describe-instances --instance-ids $GITHUB_ENV | jq -r '.Reservations[0].Instances[0] | .PublicDnsName')" >> $GITHUB_ENV 
+          echo "C5_REMOTE_HOST=$(aws ec2 describe-instances --instance-ids ${{ C5_INSTANCE_ID }} | jq -r '.Reservations[0].Instances[0] | .PublicDnsName')" >> $GITHUB_ENV 
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -61,6 +64,10 @@ jobs:
           SSH_FILE: ${{ secrets.SSH_FILE }}
           AWS_MAX_ATTEMPTS: 90
           AWS_POLL_DELAY_SECONDS: 60
+          C5_INSTANCE_ID: ${{ C5_INSTANCE_ID }}
+
+    - name: Repeat Host
+      run: echo "${{ env.GITHUB_ENV }}"
 
 
     - name: Checkout the files
