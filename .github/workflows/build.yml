@@ -79,10 +79,7 @@ jobs:
         REMOTE_HOST: ${{ env.C5_REMOTE_HOST }}
         REMOTE_USER: ec2-user
         TARGET: /home/ec2-user
-    
-    - name: Install Qemu packages
-      run: |
-          
+      
     
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
