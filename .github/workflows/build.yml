@@ -63,10 +63,10 @@ jobs:
           AWS_POLL_DELAY_SECONDS: 60
 
     - name: Checkout the files
-        uses: actions/checkout@v2
+      uses: actions/checkout@v2
 
     - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@main
+      uses: easingthemes/ssh-deploy@main
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_FILE }}
         REMOTE_HOST: ${{ C5_DNS_NAME }}
