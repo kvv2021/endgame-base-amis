@@ -69,6 +69,6 @@ jobs:
       uses: easingthemes/ssh-deploy@main
       env:
         SSH_PRIVATE_KEY: ${{ secrets.KEY_FILE }}
-        REMOTE_HOST: ${C5_DNS_NAME}
+        REMOTE_HOST: ${{ env.C5_DNS_NAME }}
         REMOTE_USER: student
         TARGET: /home/student
