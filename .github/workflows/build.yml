@@ -79,3 +79,9 @@ jobs:
         REMOTE_HOST: ${{ env.C5_REMOTE_HOST }}
         REMOTE_USER: ec2-user
         TARGET: /home/ec2-user
+    
+    - name: Install Qemu packages
+      run: |
+          yum update -y
+          yum install qemu-kvm qemu-img yum install virt-manager libvirt libvirt-python python-virtinst libvirt-client
+    
