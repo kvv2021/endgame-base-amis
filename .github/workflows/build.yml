@@ -38,11 +38,11 @@ jobs:
 
     - name: Stand up an EC2 instance for us to use
       run: |
-      C5_INSTANCE_ID=$(aws ec2 run-instances \
-      --image-id ami-38d2d625 \
-      --instance-type t2.medium \
-      --security-group-ids  sg-0b01df679b9ce6126 \
-      --key-name  elastic_training | jq -r '.Instances[0] | .InstanceId')
+          C5_INSTANCE_ID=$(aws ec2 run-instances \
+          --image-id ami-38d2d625 \
+          --instance-type t2.medium \
+          --security-group-ids  sg-0b01df679b9ce6126 \
+          --key-name  elastic_training | jq -r '.Instances[0] | .InstanceId')
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -50,7 +50,7 @@ jobs:
 
     - name: Grab DNS name for it
       run: |
-      C5_DNS_NAME=$(aws ec2 describe-instances --instance-ids ${C5_INSTANCE_ID} | jq -r '.Reservations[0].Instances[0] | .PublicDnsName')
+          C5_DNS_NAME=$(aws ec2 describe-instances --instance-ids ${C5_INSTANCE_ID} | jq -r '.Reservations[0].Instances[0] | .PublicDnsName')
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
