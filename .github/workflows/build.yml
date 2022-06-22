@@ -37,7 +37,7 @@ jobs:
 
     - name: Stand up an EC2 instance for us to use
       run: |
-          C5_INSTANCE_ID$(=aws ec2 run-instances \
+          C5_INSTANCE_ID=$(aws ec2 run-instances \
           --image-id ami-38d2d625 \
           --instance-type t2.medium \
           --security-group-ids sg-0b01df679b9ce6126 \
