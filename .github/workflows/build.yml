@@ -46,3 +46,18 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: eu-central-1
+
+    - name: Grab DNS name for it
+      run: |
+          C5_DNS_NAME=$(aws ec2 describe-instances --instance-ids ${C5_INSTANCE_ID} | jq -r '.Reservations[0].Instances[0] | .PublicDnsName')
+      env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: eu-central-1
+          RUNNER_IPV4: ${{ steps.ip.outputs.ipv4 }}
+          KEY_FILE: ${{ secrets.KEY_FILE }}
+          EC_AUTH: ${{ secrets.EC_AUTH}}
+          EC_ID: ${{ secrets.EC_ID }}
+          SSH_FILE: ${{ secrets.SSH_FILE }}
+          AWS_MAX_ATTEMPTS: 90
+          AWS_POLL_DELAY_SECONDS: 60
