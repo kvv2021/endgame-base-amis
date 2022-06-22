@@ -68,7 +68,7 @@ jobs:
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@main
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_FILE }}
+        SSH_PRIVATE_KEY: ${{ secrets.KEY_FILE }}
         REMOTE_HOST: ${C5_DNS_NAME}
         REMOTE_USER: student
         TARGET: /home/student
