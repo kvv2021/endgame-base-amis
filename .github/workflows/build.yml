@@ -52,7 +52,7 @@ jobs:
 
     - name: Grab DNS name for it
       run: |
-          echo "C5_REMOTE_HOST=$(aws ec2 describe-instances --instance-ids ${{ C5_INSTANCE_ID }} | jq -r '.Reservations[0].Instances[0] | .PublicDnsName')" >> $GITHUB_ENV 
+          echo "C5_REMOTE_HOST=$(aws ec2 describe-instances --instance-ids ${{ env.C5_INSTANCE_ID }} | jq -r '.Reservations[0].Instances[0] | .PublicDnsName')" >> $GITHUB_ENV 
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
