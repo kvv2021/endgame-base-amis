@@ -76,6 +76,6 @@ jobs:
       uses: easingthemes/ssh-deploy@main
       env:
         SSH_PRIVATE_KEY: ${{ secrets.KEY_FILE }}
-        REMOTE_HOST: ${{ env.GITHUB_ENV }}
+        REMOTE_HOST: ${{ env.C5_REMOTE_HOST }}
         REMOTE_USER: ec2-user
         TARGET: /home/ec2-user
