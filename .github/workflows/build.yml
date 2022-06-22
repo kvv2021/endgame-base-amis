@@ -77,7 +77,7 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.KEY_FILE }}
         REMOTE_HOST: ${{ env.C5_REMOTE_HOST }}
-        REMOTE_USER: root
+        REMOTE_USER: ec2-user
         TARGET: /tmp
       
     
