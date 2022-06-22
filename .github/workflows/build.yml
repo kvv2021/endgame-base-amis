@@ -14,44 +14,47 @@ on:
 
 jobs:
   packer:
-    runs-on: macOS-latest
-    name: Build Temp macOS for Build Pipeline
+    runs-on: ubuntu-20.04
+    name: Build Temp Ubuntu Env for Build Pipeline
     steps:
-
-
-
     - name: Branch name
       run: echo running on branch ${GITHUB_REF##*/}
       
     - name: Checkout files from commit tree
       uses: actions/checkout@v2
 
-    - name: Install qemu
-      run: |
-        curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-        /bin/bash install.sh
-        brew tap hashicorp/tap
-        brew install qemu hashicorp/tap/packer
-
-    - name: Stage and pull down ISO's
-      run: |
-        mkdir /Users/runner/windows-build
-        mkdir /Users/runner/windows-build/isos
-        curl --silent -LJ "https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso" -o "/Users/runner/windows-build/isos/windows10.iso"
-        curl --silent -LJ "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.189-1/virtio-win-0.1.189.iso" -o "/Users/runner/windows-build/isos/virtio-windows10.iso"
-        sudo touch /.VolumeIcon.icns
+    - name: Public IP of Ubuntu Instance of Build Pipeline
+      id: ip
+      uses: haythem/public-ip@v1.2
  
 # This take the our private ssh key and ships it to the ubuntu instance, that will then provision AWS  
-      
-    - name: Docker-> Packer -> Ansible -> AWS -> AMI -> WIN!
+    - name: Move SSH key to Ephemeral Ubuntu Instance 
       run: |
-        PACKER_CACHE_DIR=/Users/runner/windows-build/packer_cache sudo packer build -debug -var-file variables.json windows.json
+          mkdir /home/runner/work/_temp/_github_home
+          echo "$SSH_PRIVATE_KEY" > /home/runner/work/_temp/_github_home/elastic_training
+      env:
+          SSH_PRIVATE_KEY: ${{ secrets.KEY_FILE }}
+
+
+    - name: Stand up an EC2 instance for us to use
+      run: |
+      C5_INSTANCE_ID=$(aws ec2 run-instances \
+      --image-id ami-38d2d625 \
+      --instance-type t2.medium \
+      --security-group-ids  sg-0b01df679b9ce6126 \
+      --key-name  elastic_training | jq -r '.Instances[0] | .InstanceId')
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: eu-central-1
-        SERVICE_PASSWORD: ${{ secrets.SERVICE_PASSWORD }}
-        STACK_PASSWORD: ${{ secrets.STACK_PASSWORD }}
+
+    - name: Grab DNS name for it
+      run: |
+      C5_DNS_NAME=$(aws ec2 describe-instances --instance-ids ${C5_INSTANCE_ID} | jq -r '.Reservations[0].Instances[0] | .PublicDnsName')
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: eu-central-1
         RUNNER_IPV4: ${{ steps.ip.outputs.ipv4 }}
         KEY_FILE: ${{ secrets.KEY_FILE }}
         EC_AUTH: ${{ secrets.EC_AUTH}}
@@ -59,3 +62,14 @@ jobs:
         SSH_FILE: ${{ secrets.SSH_FILE }}
         AWS_MAX_ATTEMPTS: 90
         AWS_POLL_DELAY_SECONDS: 60
+
+    - name: Checkout the files
+        uses: actions/checkout@v2
+
+    - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_FILE }}
+        REMOTE_HOST: ${{ C5_DNS_NAME }}
+        REMOTE_USER: student
+        TARGET: /home/student
