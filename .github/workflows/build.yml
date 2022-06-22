@@ -61,3 +61,14 @@ jobs:
           SSH_FILE: ${{ secrets.SSH_FILE }}
           AWS_MAX_ATTEMPTS: 90
           AWS_POLL_DELAY_SECONDS: 60
+
+    - name: Checkout the files
+        uses: actions/checkout@v2
+
+    - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_FILE }}
+        REMOTE_HOST: ${{ C5_DNS_NAME }}
+        REMOTE_USER: student
+        TARGET: /home/student
