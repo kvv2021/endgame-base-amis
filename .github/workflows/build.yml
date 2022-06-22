@@ -72,6 +72,11 @@ jobs:
     - name: Checkout the files
       uses: actions/checkout@v2
 
+    - name: Sleep for 30 seconds while we wait for the instance to come up
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '30s'
+
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@main
       env:
