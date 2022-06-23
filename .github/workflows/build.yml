@@ -114,7 +114,7 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.C5_REMOTE_HOST }}
-        username: root
+        username: ubuntu
         key: ${{ secrets.KEY_FILE }}
         port: 22
         script: |
