@@ -41,7 +41,7 @@ jobs:
           --image-id ami-0f58468b80db2db66 \
           --instance-type c5.large \
           --security-group-ids sg-0b01df679b9ce6126 \
-          --key-name elastic_training 
+          --key-name elastic_training \
           --block-device-mappings DeviceName=/dev/sda1,Ebs={VolumeSize=100}| jq -r '.Instances[0] | .InstanceId')" >> $GITHUB_ENV
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
