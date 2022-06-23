@@ -5,7 +5,7 @@
   "_comment3": "NAME=windows-server-2019   WINDOWS_VERSION=2019 DRIVER_ISO=./packer_cache/virtio-win.iso ISO_URL=https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso                                                          packer build windows.json",
   "builders": [
     {
-      "accelerator": "{{ user `qemu_accelerator`}}",
+      "accelerator": "kvm",
       "boot_command": "",
       "boot_wait": "6m",
       "communicator": "winrm",
@@ -29,7 +29,7 @@
       ],
       "format": "raw",
       "headless": "{{ user `headless`}}",
-      "display": "{{ user `display`}}",
+      "display": "none",
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_urls": [
         "{{user `iso_url`}}"
@@ -135,7 +135,7 @@
     "name": "{{ env `NAME` }}",
     "driver_iso_url" : "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.189-1/virtio-win-0.1.189.iso",
     "driver_iso_sha256": "97e9f9c7a47cb3d2ba744b8e1c78008a20a2804c89657fcae47113a96885c566",
-    "driver_iso_path": "/Users/runner/windows-build/isos/virtio-windows10.iso",
+    "driver_iso_path": "/tmp/windows/virtio-windows10.iso",
     "virtio_win_iso_dir": "/Users/runner/windows-build",
     "winrm_password": "admin",
     "winrm_username": "since-reader-escape-within",

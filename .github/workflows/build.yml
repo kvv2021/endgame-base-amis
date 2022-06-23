@@ -38,7 +38,7 @@ jobs:
     - name: Stand up an EC2 instance for us to use
       run: |
           echo "C5_INSTANCE_ID=$(aws ec2 run-instances \
-          --image-id ami-0f58468b80db2db66 \
+          --image-id ami-0c9354388bb36c088 \
           --instance-type c5.large \
           --security-group-ids sg-0b01df679b9ce6126 \
           --key-name elastic_training \
@@ -91,24 +91,24 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.C5_REMOTE_HOST }}
-        username: root
+        username: ubuntu
         key: ${{ secrets.KEY_FILE }}
         port: 22
         script: |
-          sudo yum update -y
-          sudo yum install qemu-kvm qemu-img yum install virt-manager libvirt libvirt-python python-virtinst libvirt-client
+          apt-get update
+          apt-get install qemu virt-manager
     
     - name: Install Packer
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.C5_REMOTE_HOST }}
-        username: root
+        username: ubuntu
         key: ${{ secrets.KEY_FILE }}
         port: 22
         script: |
-          sudo yum install -y yum-utils
-          sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-          sudo yum -y install packer
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          apt-get update && sudo apt-get install packer
 
     - name: Stand up Windows instance
       uses: appleboy/ssh-action@master
