@@ -38,7 +38,7 @@ jobs:
     - name: Stand up an EC2 instance for us to use
       run: |
           echo "C5_INSTANCE_ID=$(aws ec2 run-instances \
-          --image-id ami-0f64f746a3cb9a16e \
+          --image-id ami-0c9354388bb36c088 \
           --instance-type c5.large \
           --security-group-ids sg-0b01df679b9ce6126 \
           --key-name elastic_training \
@@ -83,7 +83,7 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.KEY_FILE }}
         REMOTE_HOST: ${{ env.C5_REMOTE_HOST }}
-        REMOTE_USER: ec2-user
+        REMOTE_USER: ubuntu
         TARGET: /tmp
       
     
