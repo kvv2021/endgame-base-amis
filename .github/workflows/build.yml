@@ -38,7 +38,7 @@ jobs:
     - name: Stand up an EC2 instance for us to use
       run: |
           echo "C5_INSTANCE_ID=$(aws ec2 run-instances \
-          --image-id ami-0c9354388bb36c088 \
+          --image-id ami-0f64f746a3cb9a16e \
           --instance-type c5.large \
           --security-group-ids sg-0b01df679b9ce6126 \
           --key-name elastic_training \
