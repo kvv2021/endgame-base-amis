@@ -22,7 +22,7 @@ while (-not $established) {
 
 #Adding HostBlacklist line to prod.ini
 $FileContent =
-    Get-ChildItem "C:\fakenet1.4.11\fakenet1.4.11\configs\prod.ini" |
+    Get-ChildItem "C:\fakenet1.4.11\fakenet1.4.11\configs\default.ini" |
         Get-Content
 
 $NewFileContent = @()
